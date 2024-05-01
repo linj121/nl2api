@@ -4,6 +4,8 @@ import API from "./api.js";
 import CONFIG from "./config.js";
 import { logger } from "./logger.js";
 
+logger.log("Current selected model: " + CONFIG.OPENAI_MODEL);
+
 const openai = new OpenAI({ apiKey: CONFIG.OPENAI_API_KEY });
 
 const messages = [];
@@ -27,12 +29,12 @@ async function prompt() {
 
   logger.log("Querying OpenAI with the question: " + messages[messages.length - 1].content);
   const first_response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: CONFIG.OPENAI_MODEL,
     messages: messages,
     tools: tools,
     tool_choice: "auto",
   });
-  logger.log("First response from OpenAI:");
+  logger.log("Response from OpenAI to the current query:");
   logger.log(JSON.stringify(first_response));
 
   const tool_calls_list = first_response.choices[0].message.tool_calls;
@@ -90,10 +92,14 @@ async function prompt() {
   }
   logger.log("Querying OpenAI to enrich the final answer...");
   const final_response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: CONFIG.OPENAI_MODEL,
     messages: messages,
     tools: tools,
     tool_choice: "auto",
+  });
+  messages.push({
+    role: "assistant",
+    content: final_response.choices[0].message.content,
   });
   logger.log("Enriched repsonse from OpenAI:");
   logger.log(JSON.stringify(final_response));

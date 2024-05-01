@@ -2,8 +2,11 @@
 
 ## About
 
-A polyglot assistant that answers any question for you. Now support checking weather of the current day in any city by its name.
-![chat example](docs/chatExample1.png)
+- A polyglot gpt assistant that answers any question for you
+- Support checking weather of the current day in one or more locations
+- Locations can be inferred intelligently from your conversation
+
+![chat example2](docs/chatExample2.png)
 
 ## Quick Start
 
