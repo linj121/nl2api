@@ -3,8 +3,7 @@
 ## About
 
 - A polyglot gpt assistant that answers any question for you
-- Support checking weather of the current day in one or more locations
-- Locations can be inferred intelligently from your conversation
+- Support checking weather of the current day in one or more locations. Locations can be inferred intelligently based on the context
 
 ![chat example2](docs/chatExample2.png)
 
@@ -45,6 +44,11 @@
 - [ ] Refactor with proper OOP, ideally a plugin system
 
 - [ ] More APIs
+
+## How does this work
+
+![flow chart](docs/flow-chart.jpg)
+[Source](https://towardsdatascience.com/create-an-agent-with-openai-function-calling-capabilities-ad52122c3d12)
 
 ## Resources on function calling
 
