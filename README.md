@@ -1,4 +1,9 @@
-# Natural Language to API Call
+# Natural Language to API Call in Your Termimal
+
+## About
+
+A polyglot assistant that answers any question for you. Now support checking weather of the current day in any city by its name.
+![chat example](docs/chatExample1.png)
 
 ## Quick Start
 
@@ -28,8 +33,15 @@
 
 ## Roadmap
 
-- Rewrite with TypeScript
-- Refactor with proper OOP
+- [ ] Add initial system prompt to increase accuracy
+
+- [ ] Docker
+
+- [ ] Rewrite with TypeScript
+
+- [ ] Refactor with proper OOP, ideally a plugin system
+
+- [ ] More APIs
 
 ## Resources on function calling
 
