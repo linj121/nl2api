@@ -6,12 +6,13 @@
 
 \* _This project has only been tested on NodeJS v.20.12.2_
 
-Run `cp .env.example .env` and fillout the API Keys
+`cp .env.example .env` and configure `.env`
 
 | API_KEY                | Description                                                                                                                                            |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| OPENAI_API_KEY         | API Key in your OpenAI account: [https://platform.openai.com/settings/profile?tab=api-keys](https://platform.openai.com/settings/profile?tab=api-keys) |
 | OPENWEATHERMAP_API_KEY | API Key in your OpenWeatherMap account: [https://home.openweathermap.org/api_keys](https://home.openweathermap.org/api_keys)                           |
+| OPENAI_API_KEY         | API Key in your OpenAI account: [https://platform.openai.com/settings/profile?tab=api-keys](https://platform.openai.com/settings/profile?tab=api-keys) |
+| OPENAI_MODEL           | By default: `gpt-3.5-turbo`. View a list of available models from OpenAI: https://platform.openai.com/docs/models                                      |
 
 ### Run the project
 
@@ -28,6 +29,7 @@ Run `cp .env.example .env` and fillout the API Keys
 ## Roadmap
 
 - Rewrite with TypeScript
+- Refactor with proper OOP
 
 ## Resources on function calling
 

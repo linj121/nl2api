@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import readline from "node:readline/promises";
 import API from "./api.js";
 import CONFIG from "./config.js";
+import { logger } from "./logger.js";
 
 const openai = new OpenAI({ apiKey: CONFIG.OPENAI_API_KEY });
 
@@ -17,22 +18,22 @@ async function prompt() {
   rl.close();
   if (userQuery === "exit") return "exit";
   if (!userQuery) {
-    console.log("\x1b[36m%s\x1b[0m", "Please enter a valid query");
+    logger.chat("Please enter a valid query");
     return;
   }
 
   messages.push({ role: "user", content: userQuery });
-  console.log("Current messages: " + JSON.stringify(messages));
+  logger.log("Current messages: " + JSON.stringify(messages));
 
-  console.log("\x1b[36m%s\x1b[0m", "Querying OpenAI with the question: " + messages[messages.length - 1].content);
+  logger.log("Querying OpenAI with the question: " + messages[messages.length - 1].content);
   const first_response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: messages,
     tools: tools,
     tool_choice: "auto",
   });
-  console.log("First response from OpenAI:");
-  console.log(JSON.stringify(first_response));
+  logger.log("First response from OpenAI:");
+  logger.log(JSON.stringify(first_response));
 
   const tool_calls_list = first_response.choices[0].message.tool_calls;
   const isFunctionCallTriggered = Array.isArray(tool_calls_list) && tool_calls_list.length > 0;
@@ -42,7 +43,7 @@ async function prompt() {
     tool_calls: tool_calls_list,
   });
   if (!isFunctionCallTriggered) {
-    console.log("\x1b[36m%s\x1b[0m", first_response.choices[0].message.content);
+    logger.chat(first_response.choices[0].message.content);
     return;
   }
 
@@ -72,44 +73,41 @@ async function prompt() {
   //   usage: { prompt_tokens: 85, completion_tokens: 17, total_tokens: 102 },
   //   system_fingerprint: "fp_ea6eb70039",
   // };
-
+  logger.chat("I'm querying the relavant information for you, might take a few seconds...");
   for (const tool_call of tool_calls_list) {
     const function_to_call = tool_call.function.name;
     const function_call_arguments = JSON.parse(tool_call.function.arguments);
-    console.log("Calling function: " + function_to_call + " with arguments: " + JSON.stringify(function_call_arguments));
+    logger.log("Calling function: " + function_to_call + " with arguments: " + JSON.stringify(function_call_arguments));
     // call function dynamically by its name(string)
     const function_call_result = await API[function_to_call](function_call_arguments);
-    console.log("Function call result: " + JSON.stringify(function_call_result));
+    logger.log("Function call result: " + JSON.stringify(function_call_result));
     messages.push({
       role: "tool",
       content: JSON.stringify(function_call_result),
       tool_call_id: tool_call.id,
     });
-    console.log("Current messages: " + JSON.stringify(messages));
+    logger.log("Current messages: " + JSON.stringify(messages));
   }
-  console.log("Querying OpenAI to enrich the final answer...");
+  logger.log("Querying OpenAI to enrich the final answer...");
   const final_response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: messages,
     tools: tools,
     tool_choice: "auto",
   });
-  console.log("Enriched repsonse from OpenAI:");
-  console.log(JSON.stringify(final_response));
-  console.log("\x1b[36m%s\x1b[0m", final_response.choices[0].message.content);
+  logger.log("Enriched repsonse from OpenAI:");
+  logger.log(JSON.stringify(final_response));
+  logger.chat(final_response.choices[0].message.content);
 }
 
 async function main() {
-  console.log("\x1b[36m%s\x1b[0m", "Hi there, I'm your gpt assistant! You can ask me anything and I'll do my best to help you.");
-  console.log(
-    "\x1b[36m%s\x1b[0m",
-    "For function call, ask me about the weather in any city (eg. What's the weather like in Sydney? / 悉尼今天天气怎么样)"
-  );
-  console.log("\x1b[36m%s\x1b[0m", "Type 'exit' to quit");
+  logger.chat("Hi there, I'm your gpt assistant! You can ask me anything and I'll do my best to help you.");
+  logger.chat("For function call, ask me about the weather in any city (eg. What's the weather like in Sydney? / 悉尼今天天气怎么样)");
+  logger.chat("Type 'exit' to quit");
   while (true) {
     const result = await prompt();
     if (result && result.trim() === "exit") {
-      console.log("\x1b[36m%s\x1b[0m", "Goodbye!");
+      logger.chat("Goodbye!");
       break;
     }
   }
