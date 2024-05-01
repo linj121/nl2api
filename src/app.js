@@ -1,8 +1,9 @@
 import OpenAI from "openai";
 import readline from "node:readline/promises";
 import API from "./api.js";
+import CONFIG from "./config.js";
 
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: CONFIG.OPENAI_API_KEY });
 
 const messages = [];
 const tools = API.tools;

@@ -1,10 +1,11 @@
 {
-  "name": "functionCallingOpenAI",
-  "version": "1.0.0",
+  "name": "nl2api",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,5 +14,9 @@
   "dependencies": {
     "openai": "^4.39.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
+  }
 }

@@ -1,9 +1,11 @@
+import CONFIG from "./config.js";
+
 const API = {
   // units: standard => litre(ml), metric => Celsius(degree), imperial => Fahrenheit(degree)
   async get_current_weather({ location, units = "metric" }) {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.OPENWEATHERMAP_API_KEY}&units=${units}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${CONFIG.OPENWEATHERMAP_API_KEY}&units=${units}`
       );
       const data = await response.json();
       return data;
